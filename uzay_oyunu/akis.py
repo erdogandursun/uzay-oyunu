@@ -1,3 +1,5 @@
+from functools import lru_cache 
+from typing import Dict, Iterator, List, Tuple 
 from typing import Iterator, Tuple 
 from typing import Iterator 
 def fibonacci() -> Iterator[int]: 
@@ -37,3 +39,15 @@ def uzun_yolculuklar(
     for kayit in kayitlar:
         if kayit[2] > esik:
             yield kayit         
+def rota_sayaci(baglantilar: Dict[str, List[str]]):
+
+    @lru_cache(maxsize=None)
+    def rota_sayisi(gezegen: str, adim: int) -> int:
+        if adim == 0:
+            return 1
+        toplam = 0
+        for komsu in baglantilar.get(gezegen, []):
+            toplam += rota_sayisi(komsu, adim - 1)
+        return toplam 
+
+    return rota_sayisi 
