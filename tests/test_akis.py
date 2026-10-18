@@ -1,5 +1,5 @@
 import itertools 
-from uzay_oyunu.akis import fibonacci 
+from uzay_oyunu.akis import fibonacci, yakit_gostergesi  
 def test_fibonacci_next(): 
     g = fibonacci() 
     assert (next(g), next(g), next(g)) == (0, 1, 1) 
@@ -18,4 +18,11 @@ def test_fibonacci_uretec_durumu():
     assert ilk_bes == [0, 1, 1, 2, 3]
     assert sonraki_bes == [5, 8, 13, 21, 34]
     assert ilk_bes != sonraki_bes 
-    
+def test_yakit_gostergesi(): 
+    sonuc = list(yakit_gostergesi(100, 30)) 
+    assert sonuc == [70, 40, 10, 0] 
+
+
+def test_yakit_gostergesi_tam_bolunen(): 
+    sonuc = list(yakit_gostergesi(100, 50)) 
+    assert sonuc == [50, 0] 
