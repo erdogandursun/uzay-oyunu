@@ -1,4 +1,11 @@
 import itertools 
+from uzay_oyunu.akis import ( 
+    ayristir, 
+    fibonacci, 
+    satirlari_oku, 
+    uzun_yolculuklar, 
+    yakit_gostergesi, 
+) 
 from uzay_oyunu.akis import fibonacci, yakit_gostergesi  
 def test_fibonacci_next(): 
     g = fibonacci() 
@@ -26,3 +33,12 @@ def test_yakit_gostergesi():
 def test_yakit_gostergesi_tam_bolunen(): 
     sonuc = list(yakit_gostergesi(100, 50)) 
     assert sonuc == [50, 0] 
+def test_veri_boru_hatti():
+    dosya_yolu = "veri/seyir.txt"
+
+    toplam_yakit = sum(y for _, _, y in ayristir(satirlari_oku(dosya_yolu)))
+    assert toplam_yakit == 88
+
+    kayitlar = ayristir(satirlari_oku(dosya_yolu))
+    hedefler = [h for _, h, _ in uzun_yolculuklar(kayitlar, 10)]
+    assert hedefler == ["sirius", "centauri", "orion", "kara_delik"]
