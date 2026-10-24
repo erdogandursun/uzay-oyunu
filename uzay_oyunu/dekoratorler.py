@@ -15,3 +15,12 @@ def sure_olc(func: Callable[..., Any]) -> Callable[..., Any]:
         return sonuc 
 
     return wrapper 
+def say(func: Callable[..., Any]) -> Callable[..., Any]:
+
+    @wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
+        wrapper.cagri += 1
+        return func(*args, **kwargs)
+
+    wrapper.cagri = 0
+    return wrapper 
