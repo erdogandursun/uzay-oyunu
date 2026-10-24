@@ -24,3 +24,18 @@ def say(func: Callable[..., Any]) -> Callable[..., Any]:
 
     wrapper.cagri = 0
     return wrapper 
+def log_cagri(func: Callable[..., Any]) -> Callable[..., Any]:
+
+    @wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
+        # Argümanları biçimlendirme
+        arg_str_list = [repr(a) for a in args]
+        kwarg_str_list = [f"{k}={v!r}" for k, v in kwargs.items()]
+        tum_argumanlar = ", ".join(arg_str_list + kwarg_str_list)
+
+        print(f"-> {func.__name__}({tum_argumanlar})")
+        sonuc = func(*args, **kwargs)
+        print(f"<- {func.__name__} = {sonuc!r}")
+        return sonuc 
+
+    return wrapper 

@@ -1,6 +1,21 @@
 from functools import lru_cache
 from uzay_oyunu.dekoratorler import say, sure_olc
+from uzay_oyunu.dekoratorler import log_cagri, say, sure_olc
 
+
+def test_log_cagri_dekoratoru(capsys): 
+
+    @log_cagri
+    def yolculuk(hedef, hiz=1):
+        return f"{hedef} hiz={hiz}"
+
+    sonuc = yolculuk("orion", hiz=3)
+
+    assert sonuc == "orion hiz=3"
+
+    captured = capsys.readouterr()
+    assert "-> yolculuk('orion', hiz=3)" in captured.out 
+    assert "<- yolculuk = 'orion hiz=3'" in captured.out 
 
 # --- GÖREV 1 TESTLERİ ---
 def test_sure_olc_sonuc_degismeden_donuyor_mu():
