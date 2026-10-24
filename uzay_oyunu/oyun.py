@@ -72,4 +72,15 @@ def yakit_ekle(miktar: int, depo: list[int] | None = None) -> list[int]:
     if depo is None:
         depo = [] 
     depo.append(miktar)
-    return depo 
+    return depo
+from uzay_oyunu.komutlar import KOMUTLAR
+
+
+def komut_islemci(girdi: str, durum: dict) -> bool:     
+    girdi_temiz = girdi.strip().lower()
+    if girdi_temiz in KOMUTLAR:
+        func, _ = KOMUTLAR[girdi_temiz]
+        sonuc = func(durum)
+        print(sonuc)
+        return True
+    return False 
