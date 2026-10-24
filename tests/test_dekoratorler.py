@@ -1,7 +1,61 @@
 from functools import lru_cache
 from uzay_oyunu.dekoratorler import say, sure_olc
 from uzay_oyunu.dekoratorler import log_cagri, say, sure_olc
+from functools import lru_cache
+import pytest
+from uzay_oyunu.dekoratorler import hafiza, sinirla
 
+
+def test_sinirla_dekoratoru():
+
+    @sinirla(0, 100)
+    def yakit_harca_test(miktar):
+        return 100 - miktar
+
+    # Normal ve sınır değerler
+    assert yakit_harca_test(30) == 70
+    assert yakit_harca_test(0) == 100
+    assert yakit_harca_test(100) == 0
+
+    # Aralık dışı değerler (ValueError bekleniyor)
+    with pytest.raises(ValueError) as exc_info:
+        yakit_harca_test(150)
+    assert "150 değeri 0-100 aralığında değil" in str(exc_info.value)
+
+    with pytest.raises(ValueError):
+        yakit_harca_test(-10)
+
+
+def test_hafiza_vs_lru_cache_bonus():
+
+    cagri_hafiza = 0
+    cagri_lru = 0
+
+    @hafiza(maxsize=2)
+    def kare_hafiza(x):
+        nonlocal cagri_hafiza
+        cagri_hafiza += 1
+        return x * x
+
+    @lru_cache(maxsize=2)
+    def kare_lru(x):
+        nonlocal cagri_lru
+        cagri_lru += 1
+        return x * x
+
+    # İlk çağrılar
+    assert kare_hafiza(2) == kare_lru(2) == 4
+    assert kare_hafiza(3) == kare_lru(3) == 9
+
+    # Önbellekten dönmeli (çağrı sayıları artmamalı)
+    assert kare_hafiza(2) == kare_lru(2) == 4
+    assert cagri_hafiza == 2
+    assert cagri_lru == 2
+
+    # Maxsize (2) dolduğu için en eski (2) silinecek, 4 eklenecek
+    assert kare_hafiza(4) == kare_lru(4) == 16
+    assert cagri_hafiza == 3
+    assert cagri_lru == 3 
 
 def test_log_cagri_dekoratoru(capsys): 
 

@@ -57,3 +57,9 @@ if __name__ == "__main__":
     # İstenen deneme adımı:
     en_bagli_gezegenler = sure_olc(en_bagli_gezegenler)
     print(en_bagli_gezegenler(g)) 
+from uzay_oyunu.dekoratorler import sinirla
+
+
+@sinirla(0, 100)
+def yakit_harca(miktar: float, mevcut_yakit: float = 100) -> float:
+    return mevcut_yakit - miktar 
